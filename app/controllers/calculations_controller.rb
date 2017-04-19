@@ -75,12 +75,12 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds = @ending - @starting
+    @minutes = @seconds/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @weeks/52
 
     # ================================================================================
     # Your code goes above.
@@ -107,17 +107,29 @@ class CalculationsController < ApplicationController
 
     @range = @maximum - @minimum
 
-    @median = "Replace this string with your answer."
+    middle=@count/2
+    if @count.even?
+      median = (@sorted_numbers[middle]+ @sorted_numbers[middle-1])/2
+    else
+      median = @sorted_numbers[middle]
+    end
+
+    @median = median
 
     @sum = @numbers.inject(0){|sum,x| sum + x }
 
     @mean = @sum/@count
 
-    @variance = @numbers.inject(0.0) {|s,x| s + (x - @mean)**2}
+    variance1 = @numbers.inject(0.0) {|s,x| s + (x - @mean)**2}
+    variance2 = variance1/@count
+
+    @variance = variance2
 
     @standard_deviation = @variance**(1.0/2)
 
-    @mode = "Replace this string with your answer."
+    freq = @numbers.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+    mode = @numbers.max_by { |v| freq[v] }
+    @mode = mode
 
     # ================================================================================
     # Your code goes above.
