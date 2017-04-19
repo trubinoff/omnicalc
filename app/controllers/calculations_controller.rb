@@ -10,15 +10,24 @@ class CalculationsController < ApplicationController
     # The special word the user input is in the string @special_word.
     # ================================================================================
 
+    text_split_into_array = @text.split
 
-    @word_count = "Replace this string with your answer."
+    @word_count = text_split_into_array.length
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.chars.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.gsub(" ","").gsub("\n","").gsub("\t","").gsub("\r","").length
 
-    @occurrences = "Replace this string with your answer."
+    # @occurrences = @text.downcase.scan(@special_word).length
 
+    text_array = @text.gsub(/[^a-z0-9\s]/i, "").downcase.split
+    @occurrences = 0
+
+    text_array.each do |word|
+      if word == @special_word.downcase
+        @occurrences += 1
+      end
+    end
     # ================================================================================
     # Your code goes above.
     # ================================================================================
@@ -38,8 +47,14 @@ class CalculationsController < ApplicationController
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
 
-    @monthly_payment = "Replace this string with your answer."
+    months = @years*12
+    month_rate = (@apr/100)/12
+    step1 = month_rate*@principal
+    step2 = (1+month_rate)**(-1*months)
+    step3 = 1-step2
 
+
+    @monthly_payment = step1/step3
     # ================================================================================
     # Your code goes above.
     # ================================================================================
@@ -82,25 +97,25 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @maximum - @minimum
 
     @median = "Replace this string with your answer."
 
-    @sum = "Replace this string with your answer."
+    @sum = @numbers.inject(0){|sum,x| sum + x }
 
-    @mean = "Replace this string with your answer."
+    @mean = @sum/@count
 
-    @variance = "Replace this string with your answer."
+    @variance = @numbers.inject(0.0) {|s,x| s + (x - @mean)**2}
 
-    @standard_deviation = "Replace this string with your answer."
+    @standard_deviation = @variance**(1.0/2)
 
     @mode = "Replace this string with your answer."
 
